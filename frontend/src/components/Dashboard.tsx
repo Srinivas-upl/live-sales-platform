@@ -475,96 +475,96 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="content-wrapper -mt-12 pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {/* Stats Cards - Mobile Optimized */}
+      <div className="content-wrapper -mt-8 md:-mt-12 pb-6 md:pb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
           {/* First Row - 3 cards */}
-          <div className="bg-white rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-all duration-200 transform hover:-translate-y-1">
+          <div className="bg-white rounded-xl md:rounded-2xl shadow-lg md:shadow-xl p-4 md:p-6 hover:shadow-xl md:hover:shadow-2xl transition-all duration-200 transform hover:-translate-y-1">
             <div className="flex items-center">
-              <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="p-2 md:p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg md:rounded-xl">
+                <svg className="w-6 h-6 md:w-8 md:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
               </div>
-              <div className="ml-4 flex-1 min-w-0">
-                <h3 className="text-sm font-medium text-gray-500">Total Products</h3>
-                <p className="text-2xl font-bold text-gray-900 truncate">{stats.totalProducts}</p>
+              <div className="ml-3 md:ml-4 flex-1 min-w-0">
+                <h3 className="text-xs md:text-sm font-medium text-gray-500">Total Products</h3>
+                <p className="text-xl md:text-2xl font-bold text-gray-900 truncate">{stats.totalProducts}</p>
                 <p className="text-xs text-green-600 mt-1">+12% from last month</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-all duration-200 transform hover:-translate-y-1">
+          <div className="bg-white rounded-xl md:rounded-2xl shadow-lg md:shadow-xl p-4 md:p-6 hover:shadow-xl md:hover:shadow-2xl transition-all duration-200 transform hover:-translate-y-1">
             <div className="flex items-center">
-              <div className="p-3 bg-gradient-to-br from-green-500 to-green-600 rounded-xl">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="p-2 md:p-3 bg-gradient-to-br from-green-500 to-green-600 rounded-lg md:rounded-xl">
+                <svg className="w-6 h-6 md:w-8 md:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <div className="ml-4 flex-1 min-w-0">
-                <h3 className="text-sm font-medium text-gray-500">Completed Orders</h3>
-                <p className="text-2xl font-bold text-gray-900 truncate">{stats.completedOrders}</p>
+              <div className="ml-3 md:ml-4 flex-1 min-w-0">
+                <h3 className="text-xs md:text-sm font-medium text-gray-500">Completed Orders</h3>
+                <p className="text-xl md:text-2xl font-bold text-gray-900 truncate">{stats.completedOrders}</p>
                 <p className="text-xs text-green-600 mt-1">+8% this week</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-all duration-200 transform hover:-translate-y-1">
+          <div className="bg-white rounded-xl md:rounded-2xl shadow-lg md:shadow-xl p-4 md:p-6 hover:shadow-xl md:hover:shadow-2xl transition-all duration-200 transform hover:-translate-y-1">
             <div className="flex items-center">
-              <div className="p-3 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-xl">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="p-2 md:p-3 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg md:rounded-xl">
+                <svg className="w-6 h-6 md:w-8 md:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <div className="ml-4 flex-1 min-w-0">
-                <h3 className="text-sm font-medium text-gray-500">Pending Orders</h3>
-                <p className="text-2xl font-bold text-gray-900 truncate">{stats.pendingOrders}</p>
+              <div className="ml-3 md:ml-4 flex-1 min-w-0">
+                <h3 className="text-xs md:text-sm font-medium text-gray-500">Pending Orders</h3>
+                <p className="text-xl md:text-2xl font-bold text-gray-900 truncate">{stats.pendingOrders}</p>
                 <p className="text-xs text-yellow-600 mt-1">Requires attention</p>
               </div>
             </div>
           </div>
 
           {/* Second Row - 3 cards (wider for revenue) */}
-          <div className="bg-white rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-all duration-200 transform hover:-translate-y-1 lg:col-span-2">
+          <div className="bg-white rounded-xl md:rounded-2xl shadow-lg md:shadow-xl p-4 md:p-6 hover:shadow-xl md:hover:shadow-2xl transition-all duration-200 transform hover:-translate-y-1 sm:col-span-2 lg:col-span-2">
             <div className="flex items-center">
-              <div className="p-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="p-2 md:p-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg md:rounded-xl">
+                <svg className="w-6 h-6 md:w-8 md:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <div className="ml-4 flex-1 min-w-0">
-                <h3 className="text-sm font-medium text-gray-500">Total Revenue</h3>
-                <p className="text-2xl font-bold text-gray-900 break-words">{formatPrice(stats.totalRevenue)}</p>
+              <div className="ml-3 md:ml-4 flex-1 min-w-0">
+                <h3 className="text-xs md:text-sm font-medium text-gray-500">Total Revenue</h3>
+                <p className="text-lg md:text-2xl font-bold text-gray-900 break-words">{formatPrice(stats.totalRevenue)}</p>
                 <p className="text-xs text-green-600 mt-1">Growth rate: +15%</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-all duration-200 transform hover:-translate-y-1">
+          <div className="bg-white rounded-xl md:rounded-2xl shadow-lg md:shadow-xl p-4 md:p-6 hover:shadow-xl md:hover:shadow-2xl transition-all duration-200 transform hover:-translate-y-1">
             <div className="flex items-center">
-              <div className="p-3 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-xl">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="p-2 md:p-3 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-lg md:rounded-xl">
+                <svg className="w-6 h-6 md:w-8 md:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
-              <div className="ml-4 flex-1 min-w-0">
-                <h3 className="text-sm font-medium text-gray-500">Total Customers</h3>
-                <p className="text-2xl font-bold text-gray-900 truncate">{stats.totalCustomers}</p>
+              <div className="ml-3 md:ml-4 flex-1 min-w-0">
+                <h3 className="text-xs md:text-sm font-medium text-gray-500">Total Customers</h3>
+                <p className="text-xl md:text-2xl font-bold text-gray-900 truncate">{stats.totalCustomers}</p>
                 <p className="text-xs text-green-600 mt-1">+5 new this week</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-all duration-200 transform hover:-translate-y-1 lg:col-span-2">
+          <div className="bg-white rounded-xl md:rounded-2xl shadow-lg md:shadow-xl p-4 md:p-6 hover:shadow-xl md:hover:shadow-2xl transition-all duration-200 transform hover:-translate-y-1 sm:col-span-2 lg:col-span-2">
             <div className="flex items-center">
-              <div className="p-3 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="p-2 md:p-3 bg-gradient-to-br from-red-500 to-orange-500 rounded-lg md:rounded-xl">
+                <svg className="w-6 h-6 md:w-8 md:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
-              <div className="ml-4 flex-1 min-w-0">
-                <h3 className="text-sm font-medium text-gray-500">Avg Order Value</h3>
-                <p className="text-2xl font-bold text-gray-900 break-words">{formatPrice(stats.avgOrderValue)}</p>
+              <div className="ml-3 md:ml-4 flex-1 min-w-0">
+                <h3 className="text-xs md:text-sm font-medium text-gray-500">Avg Order Value</h3>
+                <p className="text-lg md:text-2xl font-bold text-gray-900 break-words">{formatPrice(stats.avgOrderValue)}</p>
                 <p className="text-xs text-green-600 mt-1">+8% from last month</p>
               </div>
             </div>

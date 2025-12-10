@@ -9,20 +9,20 @@ const HomePage: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section - Flipkart Inspired */}
       <div className="bg-flipkart-gradient">
-        <div className="content-wrapper py-16">
+        <div className="content-wrapper py-8 md:py-16">
           <div className="flex flex-col lg:flex-row items-center justify-between">
             <div className="mb-8 lg:mb-0 lg:w-1/2">
-              <h1 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 md:mb-6 leading-tight">
                 Sell Live Like a
                 <span className="text-[#ff9f00]"> Pro</span>
                 <br />
-                <span className="text-3xl lg:text-4xl">With LiveShop.in</span>
+                <span className="text-2xl md:text-3xl lg:text-4xl">With LiveShop.in</span>
               </h1>
-              <p className="text-xl text-blue-100 mb-8 max-w-2xl leading-relaxed">
+              <p className="text-lg md:text-xl text-blue-100 mb-6 md:mb-8 max-w-2xl leading-relaxed">
                 Create stunning product pages, generate QR codes, and track orders in real-time. 
                 Everything you need for successful live sales, all in one platform.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
                 {!isAuthenticated ? (
                   <>
                     <Link

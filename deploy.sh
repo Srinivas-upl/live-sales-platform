@@ -63,7 +63,7 @@ if [ -d ".git" ]; then
     git pull origin main
 else
     print_status "Cloning repository..."
-    git clone https://github.com/yourusername/live-sales-platform.git .
+    git clone https://github.com/Srinivas-upl/live-sales-platform.git .
 fi
 
 # Setup environment variables
@@ -135,7 +135,9 @@ setup_ssl() {
 setup_nginx() {
     print_status "Setting up Nginx configuration..."
     
-    cat > nginx/nginx.conf << 'EOF'
+    if [ "$DOMAIN" != "yourdomain.com" ]; then
+        # With domain - HTTPS configuration
+        cat > nginx/nginx.conf << 'EOF'
 events {
     worker_connections 1024;
 }
@@ -174,14 +176,14 @@ http {
     # HTTP to HTTPS redirect
     server {
         listen 80;
-        server_name yourdomain.com www.yourdomain.com;
+        server_name $DOMAIN www.$DOMAIN;
         return 301 https://$server_name$request_uri;
     }
 
     # HTTPS Server
     server {
         listen 443 ssl http2;
-        server_name yourdomain.com www.yourdomain.com;
+        server_name $DOMAIN www.$DOMAIN;
 
         # SSL Certificates
         ssl_certificate /etc/nginx/ssl/fullchain.pem;
@@ -225,8 +227,82 @@ http {
     }
 }
 EOF
-    
-    print_status "Nginx configuration created"
+        print_status "Created HTTPS Nginx configuration for domain: $DOMAIN"
+    else
+        # Without domain - HTTP only configuration
+        cat > nginx/nginx.conf << 'EOF'
+events {
+    worker_connections 1024;
+}
+
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
+    # Security Headers
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+    # Rate limiting
+    limit_req_zone $binary_remote_addr zone=api:10m rate=10r/s;
+
+    # Backend API Server
+    upstream backend {
+        server backend:3001;
+    }
+
+    # Frontend Server
+    upstream frontend {
+        server frontend:80;
+    }
+
+    # HTTP Server (no SSL)
+    server {
+        listen 80;
+        server_name localhost;
+
+        # Frontend
+        location / {
+            proxy_pass http://frontend;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_buffering off;
+        }
+
+        # Backend API
+        location /api/ {
+            limit_req zone=api burst=20 nodelay;
+            proxy_pass http://backend;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_buffering off;
+        }
+
+        # Static files
+        location /images/ {
+            proxy_pass http://backend;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        # Health check
+        location /health {
+            proxy_pass http://backend;
+            access_log off;
+        }
+    }
+}
+EOF
+        print_status "Created HTTP Nginx configuration for localhost"
+    fi
 }
 
 # Setup firewall
@@ -393,9 +469,32 @@ deploy() {
     echo ""
     echo "📊 Deployment Summary:"
     echo "----------------------"
-    echo "Application URL: https://$DOMAIN"
-    echo "Backend API: https://$DOMAIN/api"
-    echo "Frontend: https://$DOMAIN"
+    
+    if [ "$DOMAIN" != "yourdomain.com" ]; then
+        echo "Application URL: https://$DOMAIN"
+        echo "Backend API: https://$DOMAIN/api"
+        echo "Frontend: https://$DOMAIN"
+        echo ""
+        echo "📝 Next Steps:"
+        echo "-------------"
+        echo "1. Update DNS records to point to $(curl -s ifconfig.me)"
+        echo "2. Configure your domain: $DOMAIN"
+        echo "3. Test the application at https://$DOMAIN"
+        echo "4. Review security settings in DEPLOYMENT_GUIDE.md"
+    else
+        SERVER_IP=$(curl -s ifconfig.me)
+        echo "Application URL: http://$SERVER_IP"
+        echo "Backend API: http://$SERVER_IP/api"
+        echo "Frontend: http://$SERVER_IP"
+        echo ""
+        echo "📝 Next Steps:"
+        echo "-------------"
+        echo "1. Access the application at http://$SERVER_IP"
+        echo "2. To use with a domain, update DOMAIN variable in deploy.sh"
+        echo "3. For HTTPS, set DOMAIN to your domain name and rerun deploy.sh"
+        echo "4. Review security settings in DEPLOYMENT_GUIDE.md"
+    fi
+    
     echo ""
     echo "🔧 Management Commands:"
     echo "----------------------"
@@ -403,13 +502,6 @@ deploy() {
     echo "Restart: docker-compose -f docker-compose.prod.yml restart"
     echo "Stop: docker-compose -f docker-compose.prod.yml down"
     echo "Backup: ./backup.sh"
-    echo ""
-    echo "📝 Next Steps:"
-    echo "-------------"
-    echo "1. Update DNS records to point to $(curl -s ifconfig.me)"
-    echo "2. Configure your domain: $DOMAIN"
-    echo "3. Test the application at https://$DOMAIN"
-    echo "4. Review security settings in DEPLOYMENT_GUIDE.md"
 }
 
 # Run deployment

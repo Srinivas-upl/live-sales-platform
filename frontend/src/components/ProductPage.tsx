@@ -363,11 +363,11 @@ export default function ProductPage() {
         </div>
       )}
 
-      <div className="max-w-6xl mx-auto py-8 px-4">
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          <div className="md:flex">
+      <div className="max-w-6xl mx-auto py-4 md:py-8 px-3 md:px-4">
+        <div className="bg-white rounded-xl md:rounded-2xl shadow-lg md:shadow-xl overflow-hidden">
+          <div className="flex flex-col md:flex-row">
             {/* Product Image Section */}
-            <div className="md:w-2/5 p-8 bg-gradient-to-br from-gray-50 to-gray-100">
+            <div className="w-full md:w-2/5 p-4 md:p-8 bg-gradient-to-br from-gray-50 to-gray-100">
               <div className="relative">
                 <div className="w-full h-96 rounded-2xl overflow-hidden shadow-lg">
                   {product.image && product.image.trim() ? (
@@ -433,14 +433,14 @@ export default function ProductPage() {
                 <h1 className="text-3xl font-bold text-gray-900 mb-3">{product.name}</h1>
                 <p className="text-gray-600 text-lg mb-6">{product.description}</p>
                 
-                <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                   <div className="bg-gray-50 p-4 rounded-xl">
                     <p className="text-sm text-gray-500 mb-1">Price</p>
-                    <p className="text-3xl font-bold text-gray-900">{formatPrice(product.price)}</p>
+                    <p className="text-2xl sm:text-3xl font-bold text-gray-900">{formatPrice(product.price)}</p>
                   </div>
                   <div className="bg-gray-50 p-4 rounded-xl">
                     <p className="text-sm text-gray-500 mb-1">Stock Available</p>
-                    <p className="text-3xl font-bold text-gray-900">{product.stock_quantity}</p>
+                    <p className="text-2xl sm:text-3xl font-bold text-gray-900">{product.stock_quantity}</p>
                   </div>
                 </div>
 
