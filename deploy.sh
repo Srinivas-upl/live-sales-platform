@@ -7,7 +7,18 @@ set -e
 
 ENVIRONMENT=${1:-production}
 DOMAIN="yourdomain.com"
-EMAIL="admin@yourdomain.com"
+EMAIL="srinivas@ylive-sale1234.com"
+
+# Git Configuration - Update these for your private repository
+GIT_REPO_URL="https://Srinivas-upl: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@github.com/Srinivas-upl/live-sales-platform.git"
+# For private repos, you can use one of these authentication methods:
+# 1. SSH: git@github.com:username/repo.git (requires SSH key setup)
+# 2. HTTPS with PAT: https://username:token@github.com/username/repo.git
+# 3. HTTPS with credentials in .git-credentials
+
+# Uncomment and set your preferred authentication method:
+# GIT_REPO_URL="git@github.com:yourusername/live-sales-platform.git"  # SSH
+# GIT_REPO_URL="https://yourusername:your-token@github.com/yourusername/live-sales-platform.git"  # HTTPS with PAT
 
 echo "🚀 Deploying Live Sales Platform ($ENVIRONMENT)"
 
@@ -62,8 +73,43 @@ if [ -d ".git" ]; then
     print_status "Updating existing repository..."
     git pull origin main
 else
-    print_status "Cloning repository..."
-    git clone https://github.com/Srinivas-upl/live-sales-platform.git .
+    print_status "Cloning repository from $GIT_REPO_URL..."
+    
+    # Check if SSH key is needed for private repo
+    if [[ "$GIT_REPO_URL" == git@* ]]; then
+        print_warning "Using SSH URL. Ensure SSH key is set up on the server."
+        print_warning "To set up SSH key:"
+        print_warning "1. Generate SSH key: ssh-keygen -t ed25519 -C 'your-email@example.com'"
+        print_warning "2. Add public key to GitHub: cat ~/.ssh/id_ed25519.pub"
+        print_warning "3. Test connection: ssh -T git@github.com"
+    fi
+    
+    git clone "$GIT_REPO_URL" .
+    
+    if [ $? -ne 0 ]; then
+        print_error "Failed to clone repository. Possible issues:"
+        print_error "1. Repository URL is incorrect"
+        print_error "2. Authentication failed (private repo)"
+        print_error "3. Network connectivity issues"
+        print_error ""
+        print_error "For private repositories, use one of these methods:"
+        print_error "1. SSH: git@github.com:username/repo.git (requires SSH key)"
+        print_error "2. HTTPS with PAT: https://username:token@github.com/username/repo.git"
+        print_error "3. Configure git credentials: git config --global credential.helper store"
+        exit 1
+    fi
+fi
+
+# Ensure package-lock.json files are valid and up to date
+print_status "Checking package-lock.json files..."
+if [ -f "frontend/package.json" ] && [ ! -f "frontend/package-lock.json" ]; then
+    print_warning "frontend/package-lock.json missing. Generating..."
+    cd frontend && npm install --package-lock-only && cd ..
+fi
+
+if [ -f "backend/package.json" ] && [ ! -f "backend/package-lock.json" ]; then
+    print_warning "backend/package-lock.json missing. Generating..."
+    cd backend && npm install --package-lock-only --only=production && cd ..
 fi
 
 # Setup environment variables

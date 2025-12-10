@@ -6,7 +6,13 @@ WORKDIR /app
 
 # Install dependencies first (for better caching)
 COPY package*.json ./
-RUN npm ci --only=production && npm cache clean --force
+
+# Use npm install as fallback if npm ci fails (e.g., missing package-lock.json)
+RUN if [ -f package-lock.json ]; then \
+      npm ci --only=production; \
+    else \
+      npm install --only=production; \
+    fi && npm cache clean --force
 
 # Copy source code
 COPY . .

@@ -9,7 +9,12 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install all dependencies (including dev dependencies for building)
-RUN npm ci
+# Use npm install as fallback if npm ci fails (e.g., missing package-lock.json)
+RUN if [ -f package-lock.json ]; then \
+      npm ci; \
+    else \
+      npm install; \
+    fi
 
 # Copy source code and environment files
 COPY . .
