@@ -20,6 +20,9 @@ GIT_REPO_URL="https://Srinivas-upl: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@gith
 # GIT_REPO_URL="git@github.com:yourusername/live-sales-platform.git"  # SSH
 # GIT_REPO_URL="https://yourusername:your-token@github.com/yourusername/live-sales-platform.git"  # HTTPS with PAT
 
+# Optional Features - Set to "true" or "false"
+ENABLE_BACKUPS="false"  # Set to "true" if you want automatic backups
+
 echo "🚀 Deploying Live Sales Platform ($ENVIRONMENT)"
 
 # Colors for output
@@ -129,6 +132,16 @@ else
     print_status "Backend .env file already exists"
 fi
 
+# Create necessary directories (only essential ones)
+print_status "Creating necessary directories..."
+mkdir -p uploads nginx/ssl
+if [ "$ENABLE_BACKUPS" = "true" ]; then
+    mkdir -p backups
+    print_status "Backups directory created (backups enabled)"
+else
+    print_status "Skipping backups directory creation (backups disabled)"
+fi
+
 # Create frontend .env.production
 if [ "$DOMAIN" != "yourdomain.com" ]; then
     cat > frontend/.env.production << EOF
@@ -141,10 +154,6 @@ VITE_API_URL=http://localhost:3001
 EOF
     print_warning "Using default domain. Frontend will use HTTP for API calls."
 fi
-
-# Create necessary directories
-print_status "Creating necessary directories..."
-mkdir -p uploads backups nginx/ssl nginx/conf.d
 
 # Setup SSL certificates
 setup_ssl() {

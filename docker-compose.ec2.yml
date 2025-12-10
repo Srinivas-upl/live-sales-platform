@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: live-sales-backend
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - JWT_SECRET=dev-test-secret-change-in-production
+    volumes:
+      # Use absolute path for EC2 - database file
+      - ./data/lspd.db:/app/lspd.db
+      # Use absolute path for EC2 - uploads directory
+      - ./uploads:/app/uploads
+    networks:
+      - live-sales-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: live-sales-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - live-sales-network
+    restart: unless-stopped
+
+networks:
+  live-sales-network:
+    driver: bridge
