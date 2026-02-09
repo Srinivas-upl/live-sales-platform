@@ -34,10 +34,21 @@ export function getApiUrl(endpoint: string): string {
 export async function apiFetch(endpoint: string, options: RequestInit = {}): Promise<Response> {
   const url = getApiUrl(endpoint);
   
+  // Add publishable API key header for store routes
+  const publishableApiKey = import.meta.env.VITE_PUBLISHABLE_API_KEY;
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  
+  // Always add publishable API key if available for store API calls
+  if (publishableApiKey) {
+    headers['x-publishable-api-key'] = publishableApiKey;
+  }
+  
   const response = await fetch(url, {
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      ...headers,
       ...options.headers,
     },
   });
